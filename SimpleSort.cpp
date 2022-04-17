@@ -8,6 +8,7 @@ class SimpleSort
         private:
         int * arr;
         int SIZE;
+        int * end;
         public:
         SimpleSort(const int & SIZE);
         SimpleSort() : SimpleSort(10) { /*cout<<"Call constructor(10)\n";*/ }
@@ -22,6 +23,7 @@ SimpleSort::SimpleSort(const int & SIZE)
     {
         this->SIZE = SIZE;
         arr = new int[SIZE];
+        end = arr + SIZE;
     };
 
 SimpleSort::~SimpleSort()
@@ -29,57 +31,46 @@ SimpleSort::~SimpleSort()
         delete [] arr;
     };
 
-void SimpleSort::rand_fill(const int & up_border)
+void SimpleSort::rand_fill(const int & up_border)// протестить с новой итерацией
     {
         if(up_border == 0) return;
-        for(int i = 0; i < SIZE; i++) // оптимизировать итерацию по массиву.
-            arr[i] = (rand() % up_border);
+        for(int * ptr = arr; ptr < end; ptr++)
+            *ptr = (rand() % up_border);
     };
 
-bool SimpleSort::is_sorted()
+bool SimpleSort::is_sorted() // протестить с новой итерацией
     {
-        for(int i = 0; i < SIZE-1; i++) // оптимизировать итерацию по массиву.
-            if(arr[i] > arr[i+1]) return false;
+        for(int *ptr = arr+1; ptr < end; ptr++) 
+            if(*ptr < *(ptr-1)) return false;
         return true;
-
     }
 
 void SimpleSort::show()
     {
-        for(int i = 0; i < SIZE; i++) // оптимизировать итерацию по массиву.
-            cout<<arr[i]<<" ";
+        for(int *ptr = arr; ptr < end; ptr++) 
+            cout<<*ptr<<" ";
         cout<<endl;
     }
 
-void SimpleSort::InsertionSort()
+void SimpleSort::InsertionSort() // протестить с новой итерацией
     {   
-        for(int it = 1; it < SIZE; it++)
-            {
-                int element = arr[it];
-                // cout<<"берем элемент "<<element<<endl;
-                int last_it = it - 1;
-                // cout<<"и предыдущий за ним "<<arr[last_it]<<endl;
-                while((last_it > -1) && (arr[last_it] > element))
+        for(int * ptr = arr + 1; ptr < end; ptr++) // for(int it = 1; it < SIZE; it++)
+            { 
+                int element = * ptr; // int element = arr[it];
+                int * last_ptr = (ptr-1); // int last_it = it - 1;
+                while((last_ptr >= arr) && (*last_ptr > element)) // while((last_it > -1) && (arr[last_it] > element))
                     {
-                        // cout<<"Элемент "<<arr[last_it]<<" больше чем "<<element<<"\nпоэтому сдвигаем элементы\n";
-                        arr[last_it+1] = arr[last_it]; 
-                        last_it--;
-                        show();
+                        *(last_ptr+1) = *last_ptr; // arr[last_it+1] = arr[last_it];
+                        last_ptr--; //  last_it--;
                     };
-                arr[++last_it] = element;
-                
+                *(last_ptr++) = element; // arr[++last_it] = element;
             };
-
     };
 
 int main()
 {
     srand(time(0));
-    SimpleSort arr1(5);
-    arr1.rand_fill(10);
+    SimpleSort arr1(10);
     arr1.show();
-    cout<<((arr1.is_sorted()) ? "Collection is sorted\n" : "Collection is NOT sorted!\n");
-    arr1.InsertionSort();
-    cout<<((arr1.is_sorted()) ? "Collection is sorted\n" : "Collection is NOT sorted!\n");
     return 0;
 }
