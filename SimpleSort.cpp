@@ -16,6 +16,7 @@ class SimpleSort
         void rand_fill(const int & up_border); // заполнение массива случайными элементами
         void show();
         void InsertionSort(); // сортировка вставкой
+        void SelectionSort(); // сортировка выбором
         bool is_sorted(); // проверка на сортировку.
     };
 
@@ -67,10 +68,27 @@ void SimpleSort::InsertionSort() // протестить с новой итер�
             };
     };
 
+void SimpleSort::SelectionSort()
+    {
+        for(int * ptr = arr; ptr < end-1; ptr++)
+            {
+                int * min =  ptr;
+                for(int *ptr2 = ptr + 1; ptr2 < end; ptr2++)
+                    {
+                        if(*ptr2 < *min) min = ptr2;
+                    }
+                if(ptr != min) swap(*ptr,*min);
+            }
+    };
+
 int main()
 {
     srand(time(0));
     SimpleSort arr1(10);
+    arr1.rand_fill(10);
     arr1.show();
+    arr1.SelectionSort();
+    arr1.show();
+    cout<<arr1.is_sorted();
     return 0;
 }
