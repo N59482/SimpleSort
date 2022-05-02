@@ -32,14 +32,14 @@ SimpleSort::~SimpleSort()
         delete [] arr;
     };
 
-void SimpleSort::rand_fill(const int & up_border)// протестить с новой итерацией
+void SimpleSort::rand_fill(const int & up_border)
     {
         if(up_border == 0) return;
         for(int * ptr = arr; ptr < end; ptr++)
             *ptr = (rand() % up_border);
     };
 
-bool SimpleSort::is_sorted() // протестить с новой итерацией
+bool SimpleSort::is_sorted()
     {
         for(int *ptr = arr+1; ptr < end; ptr++) 
             if(*ptr < *(ptr-1)) return false;
@@ -53,22 +53,22 @@ void SimpleSort::show()
         cout<<endl;
     }
 
-void SimpleSort::InsertionSort() // протестить с новой итерацией
+void SimpleSort::InsertionSort() 
     {   
-        for(int * ptr = arr + 1; ptr < end; ptr++) // for(int it = 1; it < SIZE; it++)
+        for(int * ptr = arr + 1; ptr < end; ptr++)
             { 
-                int element = * ptr; // int element = arr[it];
-                int * last_ptr = (ptr-1); // int last_it = it - 1;
-                while((last_ptr >= arr) && (*last_ptr > element)) // while((last_it > -1) && (arr[last_it] > element))
+                int element = * ptr;
+                int * last_ptr = (ptr-1);
+                while((last_ptr >= arr) && (*last_ptr > element))
                     {
-                        *(last_ptr+1) = *last_ptr; // arr[last_it+1] = arr[last_it];
-                        last_ptr--; //  last_it--;
+                        *(last_ptr+1) = *last_ptr;
+                        last_ptr--;
                     };
-                *(last_ptr++) = element; // arr[++last_it] = element;
+                *(++last_ptr) = element; 
             };
     };
 
-void SimpleSort::SelectionSort()
+void SimpleSort::SelectionSort() 
     {
         for(int * ptr = arr; ptr < end-1; ptr++)
             {
@@ -84,11 +84,15 @@ void SimpleSort::SelectionSort()
 int main()
 {
     srand(time(0));
-    SimpleSort arr1(10);
-    arr1.rand_fill(10);
-    arr1.show();
-    arr1.SelectionSort();
-    arr1.show();
-    cout<<arr1.is_sorted();
+    SimpleSort arr1(3);
+    int tests = 10;
+    for(int i = 0; i < tests; i++)
+    {
+        arr1.rand_fill(10);
+        arr1.show();
+        arr1.InsertionSort();
+        arr1.show();
+        cout<<((arr1.is_sorted())? "collection is sorted":"collection is NOT sorted")<<endl;
+    };
     return 0;
 }
